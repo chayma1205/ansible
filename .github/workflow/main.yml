@@ -1,36 +1,31 @@
-name: Ansible Lint
+name: Ansible Run Playbook
 
 on: [push, pull_request]
 
 jobs:
-  build:
-
+  Ansible:
+    name: Ansible
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Lint Ansible Playbook
-      # replace "master" with any valid ref
-      uses: ansible/ansible-lint-action@master
+    - name: Wait for tests to succeed
+      uses: lewagon/wait-on-check-action@master
       with:
-        # [required]
-        # Paths to ansible files (i.e., playbooks, tasks, handlers etc..)
-        # or valid Ansible directories according to the Ansible role
-        # directory structure.
-        # If you want to lint multiple ansible files, use the following syntax
-        # targets: |
-        #   playbook_1.yml
-        #   playbook_2.yml
-        targets: wordpress-nginx/site.yml
+        ref: ${{ github.sha }}
+        running-workflow-name: 'Ansible'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        wait-interval: 10
+        check-regexp: .?-lint
 
     - name: Run playbook
       uses: dawidd6/action-ansible-playbook@v2
       with:
         # Required, playbook filepath
-        playbook: deploy.yml
+        playbook: site.yml
         # Optional, directory where playbooks live
-        directory: ./
+        directory: ./lamp_samples
         # Optional, SSH private key
         key: ${{secrets.SSH_PRIVATE_KEY}}
         # Optional, literal inventory file contents

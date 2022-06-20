@@ -1,0 +1,22 @@
+name: Ansible Lint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - staging
+      - main
+  release:
+    types: [published]
+
+jobs:
+  Ansible-lint:
+    name: Lint Ansible
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Lint Ansible Playbook
+      uses: ansible/ansible-lint-action@master
+      with:
+        targets: lamp_simple/site.yml
