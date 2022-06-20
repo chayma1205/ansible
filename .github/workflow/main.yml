@@ -1,0 +1,54 @@
+name: Ansible Lint
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Lint Ansible Playbook
+      # replace "master" with any valid ref
+      uses: ansible/ansible-lint-action@master
+      with:
+        # [required]
+        # Paths to ansible files (i.e., playbooks, tasks, handlers etc..)
+        # or valid Ansible directories according to the Ansible role
+        # directory structure.
+        # If you want to lint multiple ansible files, use the following syntax
+        # targets: |
+        #   playbook_1.yml
+        #   playbook_2.yml
+        targets: wordpress-nginx/site.yml
+
+    - name: Run playbook
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        # Required, playbook filepath
+        playbook: deploy.yml
+        # Optional, directory where playbooks live
+        directory: ./
+        # Optional, SSH private key
+        key: ${{secrets.SSH_PRIVATE_KEY}}
+        # Optional, literal inventory file contents
+        inventory: |
+          [all]
+          example.com
+
+          [group1]
+          example.com
+        # Optional, SSH known hosts file content
+        known_hosts: .known_hosts
+        # Optional, encrypted vault password
+        vault_password: ${{secrets.VAULT_PASSWORD}}
+        # Optional, galaxy requirements filepath
+        requirements: galaxy-requirements.yml
+        # Optional, additional flags to pass to ansible-playbook
+        options: |
+          --inventory .hosts
+          --limit group1
+          --extra-vars hello=there
+          --verbose
