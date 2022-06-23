@@ -2,12 +2,12 @@ name: Ansible Lint
 
 on:
   pull_request:
-  push:
-    branches:
-      - staging
-      - main
-  release:
-    types: [published]
+#  push:
+#    branches:
+#      - staging
+#      - main
+#  release:
+#    types: [published]
 
 jobs:
   Ansible-lint:

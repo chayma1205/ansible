@@ -1,6 +1,12 @@
 name: Ansible Run Playbook
 
-on: [push, pull_request]
+on:
+  release:
+    types: [published]
+  push:
+    branches:
+      - staging
+      - main
 
 jobs:
   Ansible:
@@ -10,14 +16,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Wait for tests to succeed
-      uses: lewagon/wait-on-check-action@master
-      with:
-        ref: ${{ github.sha }}
-        running-workflow-name: 'Ansible'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 10
-        check-regexp: .?-lint
+#    - name: Wait for tests to succeed
+#      uses: lewagon/wait-on-check-action@master
+#      with:
+#        ref: ${{ github.sha }}
+#        running-workflow-name: 'Ansible'
+#        repo-token: ${{ secrets.GITHUB_TOKEN }}
+#        wait-interval: 10
+#        check-regexp: .?-lint
 
     - name: Run playbook
       uses: dawidd6/action-ansible-playbook@v2
@@ -25,7 +31,7 @@ jobs:
         # Required, playbook filepath
         playbook: site.yml
         # Optional, directory where playbooks live
-        directory: ./lamp_samples
+        directory: ./lamp_sample
         # Optional, SSH private key
         key: ${{secrets.SSH_PRIVATE_KEY}}
         # Optional, literal inventory file contents
