@@ -31,7 +31,7 @@ jobs:
         # Required, playbook filepath
         playbook: site.yml
         # Optional, directory where playbooks live
-        directory: ./lamp_sample
+        directory: ./lamp_simple
         # Optional, SSH private key
         key: ${{secrets.SSH_PRIVATE_KEY}}
         # Optional, literal inventory file contents
