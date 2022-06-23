@@ -37,13 +37,13 @@ jobs:
         # Optional, literal inventory file contents
         inventory: |
           [all]
-          44.200.153.151
+          34.201.6.52
 
           [webservers]
-          44.200.153.151
+          34.201.6.52
 
           [dbservers]
-          44.200.153.151
+          34.201.6.52
 #        # Optional, SSH known hosts file content
 #        known_hosts: .known_hosts
 #        # Optional, encrypted vault password
